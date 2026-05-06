@@ -78,9 +78,9 @@ body {
 }
 
 .calendar-header button {
-    width: 40px !important;
-    height: 40px !important;
-    min-width: 40px !important;
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
     border-radius: 8px !important; 
     display: flex;
     align-items: center;
