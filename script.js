@@ -5,6 +5,26 @@ const soundSuccess = new Audio('https://assets.mixkit.co/active_storage/sfx/1435
 soundClick.volume = 0.2;
 soundSuccess.volume = 0.4;
 
+// Funzione per sbloccare l'audio su iOS
+function unlockAudio() {
+    soundClick.play().then(() => {
+        soundClick.pause();
+        soundClick.currentTime = 0;
+    }).catch(() => {});
+    
+    soundSuccess.play().then(() => {
+        soundSuccess.pause();
+        soundSuccess.currentTime = 0;
+    }).catch(() => {});
+    
+    // Rimuove l'evento dopo il primo sblocco
+    document.removeEventListener('click', unlockAudio);
+    document.removeEventListener('touchstart', unlockAudio);
+}
+
+// Ascolta il primo tocco dell'utente
+document.addEventListener('click', unlockAudio);
+document.addEventListener('touchstart', unlockAudio);
 // --- VARIABILI GLOBALI ---
 let currentDisplayDate = new Date();
 
@@ -23,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Richiesta notifiche
     if (Notification.permission !== "granted") {
-        Notification.requestPermission();
+       
     }
 });
 
@@ -150,18 +170,55 @@ function toggleTheme() {
     document.getElementById('themeToggle').innerText = isDark ? '☀️ Modalità Giorno' : '🌙 Modalità Notte';
 }
 
+// --- GESTIONE NOTIFICHE AGGIORNATA ---
+function requestNotificationPermission() {
+    if ("Notification" in window) {
+        Notification.requestPermission().then(permission => {
+            if (permission === "granted") {
+                console.log("Notifiche attivate!");
+            }
+        });
+    }
+}
+
+// Chiamiamo la richiesta quando l'app si carica o al primo click
+document.addEventListener('click', () => {
+    if (Notification.permission === "default") {
+        requestNotificationPermission();
+    }
+}, { once: true });
+
 function checkNotifications() {
     const now = new Date();
-    const currentTime = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
-    const currentDate = now.toISOString().split('T')[0];
+    // Otteniamo ora locale nel formato HH:MM
+    const currentTime = now.getHours().toString().padStart(2, '0') + ":" + 
+                        now.getMinutes().toString().padStart(2, '0');
+    // Otteniamo data locale nel formato YYYY-MM-DD
+    const currentDate = now.getFullYear() + "-" + 
+                        String(now.getMonth() + 1).padStart(2, '0') + "-" + 
+                        String(now.getDate()).padStart(2, '0');
+
     const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
     tasks.forEach(task => {
         if (task.date === currentDate && task.time === currentTime && !task.notified) {
-            new Notification("Cyber Agenda", { body: `Ora di: ${task.text}` });
+            
+            // Crea la notifica visiva
+            new Notification("Nadir - Promemoria", {
+                body: `Ehi! È ora di: ${task.text}`,
+                icon: "icona.png",
+                badge: "icona.png"
+            });
+
+            // Riproduci il suono di successo anche per la notifica
+            soundSuccess.play().catch(() => {});
+
+            // Segna come notificato per non ripeterlo
             task.notified = true;
             localStorage.setItem('tasks', JSON.stringify(tasks));
         }
     });
 }
-setInterval(checkNotifications, 30000);
+
+// Controlla ogni 20 secondi per essere più precisi
+setInterval(checkNotifications, 20000);
