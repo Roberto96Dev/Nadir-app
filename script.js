@@ -1,6 +1,6 @@
 // --- CONFIGURAZIONE AUDIO ---
-const soundClick = new Audio('https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3');
-const soundSuccess = new Audio('https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3');
+const soundClick = new Audio('click.mp3');
+const soundSuccess = new Audio('success.mp3');
 
 soundClick.volume = 0.2;
 soundSuccess.volume = 0.4;
