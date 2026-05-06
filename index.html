@@ -25,19 +25,20 @@
         <div class="container agenda-box">
             <h1>📅 Agenda</h1>
             <div class="input-section">
-                <input type="text" id="taskInput" placeholder="Cosa devi fare?">
-                <div class="datetime-row">
-                    <input type="date" id="dateInput">
-                    <input type="time" id="timeInput">
-                </div>
-                <select id="categoryInput">
-                    <option value="Personale">🏠 Personale</option>
-                    <option value="Lavoro">💼 Lavoro</option>
-                    <option value="Studio">📚 Studio</option>
-                    <option value="Sport">🏃 Sport</option>
-                </select>
-                <button onclick="addTask()" class="btn-main">Aggiungi</button>
-            </div>
+    <input type="text" id="taskInput" placeholder="Cosa devi fare?">
+    
+    <!-- Cambiamo questa parte -->
+    <input type="date" id="dateInput" class="datetime-field">
+    <input type="time" id="timeInput" class="datetime-field">
+    
+    <select id="categoryInput">
+        <option value="Personale">🏠 Personale</option>
+        <option value="Lavoro">💼 Lavoro</option>
+        <option value="Studio">📚 Studio</option>
+        <option value="Sport">🏃 Sport</option>
+    </select>
+    <button onclick="addTask()" class="btn-main">Aggiungi</button>
+</div>
         </div>
 
         <!-- Calendario -->
